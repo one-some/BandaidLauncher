@@ -34,6 +34,21 @@ namespace BandaidLauncher
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games");
         }
 
+        public static string GetLauncherDir()
+        {
+            return Path.Combine(GetDriveBase(), "Launcher");
+        }
+
+        public static string GetSyncDir(string subdir) {
+            return Path.Combine(GetLauncherDir(), "Sync", subdir);
+        }
+
+        public static string ExpandZanyPath(string path)
+        {
+            path = path.Replace("%documents%", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+            return path;
+        }
+
         public static void OpenMyGamesSymlink()
         {
             return;

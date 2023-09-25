@@ -19,6 +19,8 @@ namespace BandaidLauncher
             dllList.Items.Clear();
             IndexDLLs();
 
+            LoadSyncTargets();
+
             FileSystem.OpenMyGamesSymlink();
         }
 
@@ -40,6 +42,13 @@ namespace BandaidLauncher
             {
                 dllList.Items.Add(Path.GetFileName(directory));
             }
+        }
+
+        private void LoadSyncTargets()
+        {
+            SyncTarget target = new SyncTarget("%documents%\\My Games", FileSystem.GetSyncDir("My Games"));
+            int index = syncListBox.Items.Add(target);
+            syncListBox.SetItemChecked(index, target.IsEnabled());
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -104,6 +113,14 @@ namespace BandaidLauncher
             {
                 if (!game.ShouldCommit()) continue;
                 new Thread(() => game.maybeCommitToConfig()).Start();
+            }
+        }
+
+        private void syncButton_Click(object sender, EventArgs e)
+        {
+            foreach (SyncTarget syncTarget in syncListBox.Items)
+            {
+                syncTarget.Sync();
             }
         }
     }
